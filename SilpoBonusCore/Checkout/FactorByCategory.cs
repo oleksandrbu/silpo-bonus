@@ -1,10 +1,10 @@
 namespace SilpoBonusCore
 {
-    public class FactorByCategoryOffer : AnyGoodOffer {
+    public class FactorByCategoryOffer : Offer {
         private Category category;
         private int factor;
 
-        public FactorByCategoryOffer(Category category, int factor) : base(0,0){
+        public FactorByCategoryOffer(Category category, int factor){
             this.category = category;
             this.factor = factor;
         }
@@ -15,6 +15,11 @@ namespace SilpoBonusCore
 
         public int GetFactor(){
             return factor;
+        }
+
+        public override void Apply(Check check){
+            int points = check.GetCostByCategory(this.GetCategory());
+            check.AddPoints(points * (this.GetFactor() - 1));
         }
     }
 

@@ -14,7 +14,7 @@ namespace SilpoBonusCore.Tests
             this.checkoutService = new CheckoutService();
             this.checkoutService.OpenCheck();
 
-            this.milk_7 = new Product(7, "Milk", Category.MILK);
+            this.milk_7 = new Product(7, "Milk");
             this.bred_3 = new Product(3, "Bred");
         }
 
@@ -81,14 +81,34 @@ namespace SilpoBonusCore.Tests
 
         [Fact]
         void useOffer__factorByCategory() {
+            Product s_milk_10 = new Product(10, "Premiya milk", Category.MILK);
+
             checkoutService.AddProduct(milk_7);
-            checkoutService.AddProduct(milk_7);
+            checkoutService.AddProduct(s_milk_10);
             checkoutService.AddProduct(bred_3);
 
             checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2));
             Check check = checkoutService.CloseCheck();
 
-            Assert.Equal(31, check.GetTotalPoints());
+            Assert.Equal(30, check.GetTotalPoints());
+        }
+
+        [Fact]
+        void abstract_useOffer() {
+            Product s_milk_10 = new Product(10, "Premiya milk", Category.MILK);
+            Product s_bred_5 = new Product(5, "Premiya bred", Category.BRED);
+            
+            checkoutService.AddProduct(milk_7);
+            checkoutService.AddProduct(s_milk_10);
+            checkoutService.AddProduct(bred_3);
+            checkoutService.AddProduct(s_bred_5);
+            checkoutService.AddProduct(s_bred_5);
+
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3));
+            Check check = checkoutService.CloseCheck();
+        
+            Assert.Equal(60, check.GetTotalPoints());//7 + 10*2 + 3 + 2*5*3 = 60 
         }
 
     }
