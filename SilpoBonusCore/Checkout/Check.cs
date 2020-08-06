@@ -29,5 +29,16 @@ namespace SilpoBonusCore
         {
             this.points += points;
         }
+
+        public int GetCostByCategory(Category category) {
+            int price = 0;
+            foreach (Product product in this.products){
+                if (product.GetCategory() == category){
+                    price += product.GetPrice();
+                }
+            }
+            return price;
+        }
+
     }
 }

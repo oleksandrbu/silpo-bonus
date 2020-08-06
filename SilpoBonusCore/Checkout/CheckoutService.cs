@@ -25,10 +25,14 @@ namespace SilpoBonusCore
 
         public void UseOffer(AnyGoodOffer offer)
         {
-            if (offer.GetTotalCost() <= check.GetTotalCost())
-            {
-                check.AddPoints(offer.GetPoints());
-            }    
+            if (offer is FactorByCategoryOffer) {
+                FactorByCategoryOffer fbOffer = (FactorByCategoryOffer) offer;
+                int points = this.check.GetCostByCategory(fbOffer.GetCategory());
+                this.check.AddPoints(points * (fbOffer.GetFactor() - 1));
+            } else {
+                if (offer.GetTotalCost() <= this.check.GetTotalCost())
+                    this.check.AddPoints(offer.GetPoints());
+            }
         }
     }
 }
