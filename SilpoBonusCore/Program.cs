@@ -51,6 +51,10 @@ namespace SilpoBonusCore
         {
             products.Add(product);
         }
+
+        public int getTotalPoints() {
+            return getTotalCost();
+        }
     }
 
     public class Product
