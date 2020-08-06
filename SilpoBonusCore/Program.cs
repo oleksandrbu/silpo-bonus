@@ -21,10 +21,15 @@ namespace SilpoBonusCore
         }
 
         public Check closeCheck(){
-            return check;
+            Check closedCheck = check;
+            check = null;
+            return closedCheck;
         }
 
         public void addProduct(Product product) {
+            if (check == null) {
+                openCheck();
+            }
             check.addProduct(product);
         }
     }
