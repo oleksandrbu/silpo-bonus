@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 
 namespace SilpoBonusCore
 {
@@ -11,51 +11,56 @@ namespace SilpoBonusCore
         }
     }
 
-    public class Check
-    {
-        public List<Product> products;
-        public int totalCost;
-
-        public int getTotalCost()
-        {
-            return totalCost;
-        }
-    }
-
     public class CheckoutService
     {
-        private Check check;
+        Check check;
 
         public void openCheck()
         {
             check = new Check();
-            check.products = new List<Product>();
-            check.totalCost = 0;
-        }
-
-        public void addProduct(Product product)
-        {
-            check.products.Add(product);
         }
 
         public Check closeCheck(){
-            foreach (Product product in check.products)
-            {
-                check.totalCost += product.price;
-            }
             return check;
+        }
+
+        public void addProduct(Product product) {
+            check.addProduct(product);
+        }
+    }
+
+        public class Check
+    {
+        List<Product> products = new List<Product>();
+
+        public int getTotalCost()
+        {
+            int totalCost = 0;
+            foreach (Product product in this.products) {
+                totalCost += product.GetPrice();
+            }
+            return totalCost;
+        }
+
+        internal void addProduct(Product product)
+        {
+            products.Add(product);
         }
     }
 
     public class Product
     {
-        internal int price;
+        int price;
         string  name;
 
         public Product(int price, String name)
         {
             this.price = price;
             this.name = name;
+        }
+
+        public int GetPrice(){
+            return price;
         }
     }
 }

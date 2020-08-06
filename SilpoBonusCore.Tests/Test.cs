@@ -1,6 +1,5 @@
 using System;
 using Xunit;
-using SilpoBonusCore;
 
 namespace SilpoBonusCore.Tests
 {
@@ -14,7 +13,7 @@ namespace SilpoBonusCore.Tests
             checkoutService.addProduct(new Product(7, "Milk"));
             Check check = checkoutService.closeCheck();
 
-            Assert.Equal(7, check.totalCost);
+            Assert.Equal(7, check.getTotalCost());
         }
 
         [Fact]
@@ -26,7 +25,7 @@ namespace SilpoBonusCore.Tests
             checkoutService.addProduct(new Product(3, "Bred"));
             Check check = checkoutService.closeCheck();
 
-            Assert.Equal(10, check.totalCost);
+            Assert.Equal(10, check.getTotalCost());
         }
 
 
