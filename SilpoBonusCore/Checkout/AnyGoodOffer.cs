@@ -1,3 +1,5 @@
+using System;
+
 namespace SilpoBonusCore
 {
     public class AnyGoodOffer : Offer
@@ -5,7 +7,7 @@ namespace SilpoBonusCore
         private int totalCost;
         private int points;
 
-        public AnyGoodOffer(int totalCost, int points)
+        public AnyGoodOffer(int totalCost, int points, DateTime date) : base(date)
         {
             this.totalCost = totalCost;
             this.points = points;
@@ -19,7 +21,7 @@ namespace SilpoBonusCore
             return this.points;
         }
 
-        public override void Apply(Check check){
+        internal override void Apply(Check check){
             if (this.totalCost <= check.GetTotalCost())
                 check.AddPoints(this.points);
         }

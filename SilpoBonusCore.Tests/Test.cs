@@ -62,8 +62,8 @@ namespace SilpoBonusCore.Tests
             checkoutService.AddProduct(milk_7);
             checkoutService.AddProduct(bred_3);
 
-            checkoutService.UseOffer( new AnyGoodOffer(6,2));
-            Check check= checkoutService.CloseCheck();
+            checkoutService.UseOffer( new AnyGoodOffer(6,2, new DateTime(2020, 8, 15)));
+            Check check = checkoutService.CloseCheck();
 
             Assert.Equal(12, check.GetTotalPoints());
         }
@@ -73,7 +73,7 @@ namespace SilpoBonusCore.Tests
         {
             checkoutService.AddProduct(bred_3);
 
-            checkoutService.UseOffer(new AnyGoodOffer(6, 2));
+            checkoutService.UseOffer(new AnyGoodOffer(6, 2, new DateTime(2020, 8, 15)));
             Check check = checkoutService.CloseCheck();
             
             Assert.Equal(3, check.GetTotalPoints());
@@ -87,7 +87,7 @@ namespace SilpoBonusCore.Tests
             checkoutService.AddProduct(s_milk_10);
             checkoutService.AddProduct(bred_3);
 
-            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2, new DateTime(2020, 8, 15)));
             Check check = checkoutService.CloseCheck();
 
             Assert.Equal(30, check.GetTotalPoints());
@@ -104,12 +104,65 @@ namespace SilpoBonusCore.Tests
             checkoutService.AddProduct(s_bred_5);
             checkoutService.AddProduct(s_bred_5);
 
-            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2));
-            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3));
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2, new DateTime(2020, 8, 15)));
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3, new DateTime(2020, 8, 15)));
             Check check = checkoutService.CloseCheck();
         
             Assert.Equal(60, check.GetTotalPoints());//7 + 10*2 + 3 + 2*5*3 = 60 
         }
 
+        [Fact]
+        void check__offer__insert() {
+            Product s_milk_10 = new Product(10, "Premiya milk", Category.MILK);
+            Product s_bred_5 = new Product(5, "Premiya bred", Category.BRED);
+            
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3, new DateTime(2020, 8, 15)));
+            checkoutService.AddProduct(milk_7);
+            checkoutService.AddProduct(s_milk_10);
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2, new DateTime(2020, 8, 15)));
+            checkoutService.AddProduct(bred_3);
+            checkoutService.AddProduct(s_bred_5);
+            checkoutService.AddProduct(s_bred_5);
+            
+            Check check = checkoutService.CloseCheck();
+        
+            Assert.Equal(60, check.GetTotalPoints());//7 + 10*2 + 3 + 2*5*3 = 60 
+        }
+
+        [Fact]
+        void check__bad__day__offer() {
+            Product s_milk_10 = new Product(10, "Premiya milk", Category.MILK);
+            Product s_bred_5 = new Product(5, "Premiya bred", Category.BRED);
+            
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3, new DateTime(2020, 8, 6)));
+            checkoutService.AddProduct(milk_7);
+            checkoutService.AddProduct(s_milk_10);
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2, new DateTime(2020, 8, 15)));
+            checkoutService.AddProduct(bred_3);
+            checkoutService.AddProduct(s_bred_5);
+            checkoutService.AddProduct(s_bred_5);
+            
+            Check check = checkoutService.CloseCheck();
+        
+            Assert.Equal(40, check.GetTotalPoints());//7 + 10*2 + 3 + 2*5 = 40
+        }
+
+        [Fact]
+        void bad__test() {
+            Product s_milk_10 = new Product(10, "Premiya milk", Category.MILK);
+            Product s_bred_5 = new Product(5, "Premiya bred", Category.BRED);
+            
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.BRED, 3, new DateTime(2020, 8, 6)));
+            checkoutService.AddProduct(milk_7);
+            checkoutService.AddProduct(s_milk_10);
+            checkoutService.UseOffer(new FactorByCategoryOffer(Category.MILK, 2, new DateTime(2020, 8, 15)));
+            checkoutService.AddProduct(bred_3);
+            checkoutService.AddProduct(s_bred_5);
+            checkoutService.AddProduct(s_bred_5);
+            
+            Check check = checkoutService.CloseCheck();
+        
+            Assert.Equal(41, check.GetTotalPoints());//7 + 10*2 + 3 + 2*5 = 40
+        }
     }
 }

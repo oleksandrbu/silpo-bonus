@@ -1,15 +1,19 @@
+using System.Collections.Generic;
+
 namespace SilpoBonusCore
 {
     public class CheckoutService
     {
         private Check check;
-
+        private List<Offer> offersList;
         public void OpenCheck()
         {
             check = new Check();
+            offersList = new List<Offer>();
         }
 
         public Check CloseCheck(){
+            Offer.ApplyOffers(this.check, this.offersList);
             Check closedCheck = check;
             check = null;
             return closedCheck;
@@ -25,7 +29,7 @@ namespace SilpoBonusCore
 
         public void UseOffer(Offer offer)
         {
-            offer.Apply(this.check);
+            offersList.Add(offer);
         }
     }
 }
