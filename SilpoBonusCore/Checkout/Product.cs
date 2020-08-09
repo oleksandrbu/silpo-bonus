@@ -7,12 +7,14 @@ namespace SilpoBonusCore
         private int price;
         private string name;
         private Category category;
+        private string producer;
 
-        public Product(int price, String name, Category category = Category.EMPTY)
+        public Product(int price, String name, Category category = Category.EMPTY, string producer = "Unknown")
         {
             this.price = price;
             this.name = name;
             this.category = category;
+            this.producer = producer;
         }
 
         public int GetPrice(){
@@ -25,6 +27,10 @@ namespace SilpoBonusCore
 
         public Category GetCategory(){
             return category;
+        }
+
+        public string GetProducer(){
+            return producer;
         }
     } 
 }

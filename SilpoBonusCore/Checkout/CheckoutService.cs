@@ -13,7 +13,12 @@ namespace SilpoBonusCore
         }
 
         public Check CloseCheck(){
-            Offer.ApplyOffers(this.check, this.offersList);
+            if (offersList.Count > 0)
+            {
+                foreach (Offer offer in offersList)
+                    offer.ApplyOffer(check);
+            }
+            
             Check closedCheck = check;
             check = null;
             return closedCheck;

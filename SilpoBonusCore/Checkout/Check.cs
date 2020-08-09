@@ -6,10 +6,12 @@ namespace SilpoBonusCore
     {
         private List<Product> products = new List<Product>();
         private int points;
+        private int discount;
+        
         public int GetTotalCost()
         {
             int totalCost = 0;
-            foreach (Product product in this.products) {    
+            foreach (Product product in products) {    
                 totalCost += product.GetPrice();
             }
             return totalCost;
@@ -30,15 +32,32 @@ namespace SilpoBonusCore
             this.points += points;
         }
 
-        public int GetCostByCategory(Category category) {
+        public int GetCostByCategory(Category category)
+        {
             int price = 0;
-            foreach (Product product in this.products){
-                if (product.GetCategory() == category){
+            foreach (Product product in products)
+            {
+                if (product.GetCategory() == category)
+                {
                     price += product.GetPrice();
                 }
             }
             return price;
         }
 
+        public List<Product> GetProducts()
+        {
+            return products;
+        }
+
+        public void AddDiscount(int value)
+        {
+            discount += value;
+        }
+
+        public int GetDiscount()
+        {
+            return discount;
+        }
     }
 }

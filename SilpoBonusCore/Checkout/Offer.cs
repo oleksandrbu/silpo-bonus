@@ -1,44 +1,30 @@
-using System.Collections.Generic;
 using System;
 
 namespace SilpoBonusCore
 {
-    public abstract class Offer
+    public class Offer
     {
         private DateTime date;
+        private ICondition condition;
+        private IReward reward;
 
-        public DateTime GetDate()
-        {
-            return this.date;
-        }
-
-        public Offer(DateTime date)
+        public Offer(ICondition condition, IReward reward, DateTime date)
         {
             this.date = date;
+            this.condition = condition;
+            this.reward = reward;
         }
 
-        static internal List<Offer> GetValid(List<Offer> offersList)
+        public bool CheckValid()
         {
-            List<Offer> offers = new List<Offer>();
-            foreach (Offer offer in offersList)
-            {
-                if (offer.GetDate().CompareTo(DateTime.Now) >= 0)
-                {
-                    offers.Add(offer);
-                }
-
-            }
-            return offers;
+            return (date.CompareTo(DateTime.Now) >= 0);
         }
-        internal abstract void Apply(Check check);
 
-        static public void ApplyOffers(Check check, List<Offer> offersList)
+        public void ApplyOffer(Check check)
         {
-            if (offersList.Count > 0)
-                offersList = GetValid(offersList);
-            foreach (Offer offer in offersList)
+            if (CheckValid()) 
             {
-                offer.Apply(check);
+                condition.ApplyCondition(check, reward);
             }
         }
     }
